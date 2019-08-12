@@ -30,7 +30,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <!-- <tr>
               <td>未分类</td>
               <td>uncategorized</td>
               <td class="text-center">
@@ -96,7 +96,7 @@
                   >删除</a
                 >
               </td>
-            </tr>
+            </tr> -->
           </tbody>
           <tfoot>
             <tr>
@@ -153,6 +153,9 @@
             <button type="button" class="btn btn-primary" id="model_add">
               新增
             </button>
+            <button type="button" class="btn btn-primary hide" id="modal_edit"  > 
+              编辑
+            </button>
           </div>
         </div>
       </div>
@@ -179,14 +182,14 @@
     <!-- 导入模板引擎 -->
     <script src="./js/template-web.js"></script>
     <!-- 定义模板 -->
-    <script id="cate" type="text/html">
-      {{each data}}
+    <script id="cate" type="text/template">
+      {{each $data}}
           <tr>
               <td>{{$value.name}}</td>
               <td>{{$value.slug}}</td>
               <td class="text-center">
-                  <a href='javascript:editTr({"id":"{{$value.id}}","slug":"{{$value.slug}}","name":"{{$value.name}}"});' class="btn btn-info btn-xs">编辑</a>
-                  <a href="javascript:deleteTr( {{$value.id}} );" class="btn btn-danger btn-xs">删除</a>
+                  <a href='javascript:;' class="btn btn-info btn-xs"  data-id="{{$value.id}}"    >编辑</a>
+                  <a href="javascript:;"  class="btn btn-danger btn-xs" data-id="{{$value.id }}"  >删除</a>
               </td>
           </tr>
       {{/each}}
@@ -229,124 +232,124 @@
             4. 删除成功之后 重新获取数据（局部刷新）
 
           */
-
-      $(function() {
-        function getCate() {
-          $.ajax({
-            url: 'http://localhost:8000/admin/category_search',
-            type: 'get',
-            success: function(backData) {
-              console.log(backData)
-              // 调用方法 渲染页面
-              var html = template('cate', backData)
-              $('tbody').html(html)
-            }
-          })
-        }
-        // 删除数据的方法
-        window.deleteTr = function(id) {
-          // console.log(id)
-          // 调用接口
-          $.ajax({
-            url: 'http://localhost:8000/admin/category_delete',
-            type: 'post',
-            data: {
-              id: id
-            },
-            success: function(backData) {
-              // console.log(backData);
-              if (backData.code == 200) {
-                // 重新获取数据即可
-                getCate()
+            $.get({
+              url:' http://localhost:8000/admin/category_search',
+              success:function (res){
+              if(res.code===200){
+              console.log(res);
+              $('tbody').html(template( 'cate',res.data   )      )
               }
-            }
-          })
-        }
-
-        // 弹出编辑框的逻辑
-        window.editTr = function(data) {
-          console.log(data)
-          // forin
-          for (const key in data) {
-            $('input[name=' + key + ']').val(data[key])
-            /*
-              $('input[name=id]).val(data.id)
-              $('input[name=slug]).val(data.slug)
-              $('input[name=name]).val(data.name)
-            */
-          }
-          // 改弹框内容
-          $('.modal-title').text('敬请修改把！！！')
-          $('#model_add')
-            .text('保存')
-            .addClass('btn-success')
-        }
-
-        // 点击新增还原外观
-        $('.btn-add').click(function() {
-          // 改弹框内容
-          $('.modal-title').text('肆意新增吧！')
-          $('#model_add')
-            .text('新增 ')
-            .removeClass('btn-success')
-          // 清空内容
-          $('form input').val('')
-        })
-
-        // 默认调用一次
-        getCate()
-
-        // 点击新增按钮
-        $('#model_add').click(function() {
-          //  如果是保存
-          if ($(this).hasClass('btn-success')) {
-            // 获取数据
-            // var id = $('input[name=id]').val()
-            // var slug = $('input[name=slug]').val()
-            // var name = $('input[name=name]').val()
-            // ajax
-            $.ajax({
-              url: 'http://localhost:8000/admin/category_edit',
-              type: 'post',
-              // data: {
-              //   id: id,
-              //   slug: slug,
-              //   name: name
-              // },
-              data:$('form').serialize(),
-              success: function(backData) {
-                console.log(backData)
-                // 重新获取数据即可
-                if (backData.code == 200) {
-                  getCate()
-                }
               }
             })
-            // 局部刷新
-          } else {
-            // 新增
-            $.ajax({
-              url: 'http://localhost:8000/admin/category_add',
-              type: 'post',
-              data: {
-                name: $('.cate_name').val(),
-                slug: $('.cate_slug').val()
-              },
-              success: function(backData) {
-                //   console.log(backData)
-                // 隐藏弹出框
-                $('#addModal').modal('hide')
-                if (backData.code == 200) {
-                  //  重新获取数据
-                  getCate()
-                }
+            
+
+
+
+// ..................新增功能
+      $('#model_add').on('click',function (){
+      var nameVal= $('.cate_name').val();
+      var slugVal= $( '.cate_slug' ).val()
+       if(nameVal==='' || slugVal === ''   ){
+           alert('不好意思,请将表单补充完整')
+           return
+       }
+       $.ajax({
+         type:'post',
+         url:'http://localhost:8000/admin/category_add',
+         data:{
+           name:nameVal,
+           slug:slugVal
+         },
+         success:function (res){
+         console.log(res)
+         if(res.code ===200){
+           location.reload()
+         }
+         }
+       })
+      } )     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       // 3 设置删除功能    
+      
+      $('tbody').on('click','.btn-danger',function (){
+          var id=$(this).data('id')
+          var $tr= $(this).parents('tr')
+          $.post({
+            url:'http://localhost:8000/admin/category_delete',
+             data:{
+               id:id
+             },
+             success:function (res){
+              if( res.code ===200  ){
+                $tr.remove()
               }
-            })
+             }
+          })
+      }   )
+
+      var id;
+      // 4 设置编辑功能
+      $('tbody').on( 'click','.btn-info', function (){
+        // 获取id
+        id=$(this).data('id')
+        // 将当前数据填写到对应的输入框
+       $('.cate_name').val(  $(this).parents('tr').children('td').eq(0).text()            )
+       $('.cate_slug').val(  $(this).parents( 'tr').children('td').eq(1).text() 
+                      )
+        // 需要设置的编辑按钮显示,将新增按钮隐藏
+       $('#model_add').addClass('hide');
+        $('#modal_edit').removeClass('hide');
+      } )
+
+      
+       // 因为前面添加了按钮改变了元素所以给 .btn-add设置一个隐藏切换
+        $('.btn-add').on('click',function(){
+          $('#model_add').removeClass('hide');
+        $('#modal_edit').addClass('hide');
+        $('.cate_name').val('')
+         $('.cate_slug').val('')
+        }   ) ;
+    
+      //  设置编辑按钮的操作
+       
+         $('#modal_edit').on( 'click',function (){
+        //  因为前面设置了全局变量id 所以这里不用获取
+    if($('.cate_name').val()==='' ||   $('.cate_slug').val()===''){
+        alert('请填写完整表单');
+        return
+    }
+     $.post({
+         url:'http://localhost:8000/admin/category_edit',
+         data:{
+           name:$('.cate_name').val(),
+           slug:$('.cate_slug').val(),
+           id:id
+         },
+         success:function (res){
+          if( res.code===200){
+            location.reload();
           }
-          // 关闭弹框
-          $('#addModal').modal('hide')
-        })
-      })
+         }
+     })            
+         }   )
+
+
     </script>
   </body>
 </html>
