@@ -194,6 +194,8 @@
           </tr>
       {{/each}}
     </script>
+
+
     <!-- 自己的逻辑 -->
     <script>
       /*
@@ -232,6 +234,12 @@
             4. 删除成功之后 重新获取数据（局部刷新）
 
           */
+      
+    
+
+
+
+
             $.get({
               url:' http://localhost:8000/admin/category_search',
               success:function (res){
@@ -246,7 +254,7 @@
 
 
 // ..................新增功能
-      $('#model_add').on('click',function (){
+$('#model_add').on('click',function (){
       var nameVal= $('.cate_name').val();
       var slugVal= $( '.cate_slug' ).val()
        if(nameVal==='' || slugVal === ''   ){
@@ -270,27 +278,13 @@
       } )     
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
        // 3 设置删除功能    
       
       $('tbody').on('click','.btn-danger',function (){
           var id=$(this).data('id')
           var $tr= $(this).parents('tr')
-          $.post({
+          $.post({ 
+              
             url:'http://localhost:8000/admin/category_delete',
              data:{
                id:id
@@ -309,9 +303,8 @@
         // 获取id
         id=$(this).data('id')
         // 将当前数据填写到对应的输入框
-       $('.cate_name').val(  $(this).parents('tr').children('td').eq(0).text()            )
-       $('.cate_slug').val(  $(this).parents( 'tr').children('td').eq(1).text() 
-                      )
+       $('.cate_name').val(  $(this).parents('tr').children('td').eq(0).text() )
+       $('.cate_slug').val(  $(this).parents( 'tr').children('td').eq(1).text() )
         // 需要设置的编辑按钮显示,将新增按钮隐藏
        $('#model_add').addClass('hide');
         $('#modal_edit').removeClass('hide');

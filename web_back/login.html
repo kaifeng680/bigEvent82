@@ -71,6 +71,30 @@
         - 2.1 登录成功（admin和123456），跳转到index.html
         - 2.2 登录失败，提示用户
   */
+
+// $('.input_sub').on('click',function(e){
+//  e.preventDefault()
+// if( $('.input_txt').val()===''|| $('.input_pass').val()===''){
+//   alert('不好意思,不能有内容为空')
+//   return;
+// };
+// $.post({
+//    url:'http://localhost:8000/admin/login',
+//    data:{
+//     user_name:$('.input_txt').val(),
+//     password:$('.input_pass').val()
+//    },
+//    success:function (res){
+//    if(res.code===200  ){
+//      location.href='index.html'
+//    } else if( res.code===400){
+//      alert('用户名或密码错误')
+//    }
+//    }
+// })
+// } )
+
+
  $('.input_sub').on('click',function (e){
 e.preventDefault();
   

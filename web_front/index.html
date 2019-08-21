@@ -56,7 +56,7 @@
     <div class="main_con clearfix">
         <div class="left_con">
             <ul class="focus_list">
-                <li class="first">
+                <!-- <li class="first">
                     <a href="#"><img src="images/pic01.jpg" alt=""></a>
                     <p>图片说明</p>
                 </li>
@@ -75,7 +75,7 @@
                 <li>
                     <a href="#"><img src="images/pic06.jpg" alt=""></a>
                     <p>图片说明</p>
-                </li>
+                </li> -->
             </ul>
 
             <div class="common_title">
@@ -224,6 +224,54 @@
     <script src="./js/jquery-1.12.4.min.js"></script>
     <!-- 导入模板引擎 -->
     <script src="./js/template-web.js"></script>
+
+    <script type="text/template" id="article"> 
+        {{each $data}}
+         {{if   $index===0}}
+        <li class="first">
+         {{else}}
+         <li>
+            {{/if}}
+                <a href="article.html?id={{$value.id}}"><img src="{{$value.content}}" alt="">
+                <p>  {{$value.title}}    </p></a>
+            </li>
+       {{/each}}
+    </script>
+
+
+
+    <script>
+         /*制作首页顶部的5个文章简略信息展示
+           文章搜索
+           http://localhost:8000/admin/search*/
+        //    需要用到page 当前页  和 perpage每页显示的条数
+    
+        $.get({
+            url:'http://localhost:8000/admin/search',
+            data:{
+             page:1,
+             perpage:5
+            },
+            success:function (res){
+                console.log(res)
+            $('.focus_list').html(template( 'article', res.data)   )      
+            }
+        })
+
+      
+
+
+        
+        
+        
+        
+        
+        </script>
+
+
+
+
+
     </body>
 
 </html>

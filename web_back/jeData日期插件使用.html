@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="js/jedate/css/jedate.css">
+</head>
+<body>
+    <button id="btn" >按钮</button>
+    <input type="text" id="text"> 
+    <script src="js/jquery-1.12.4.min.js"></script>
+   <script src="js/jedate/js/jedate.js"></script>
+  <script>
+            /*
+            - 引入插件文件
+            - 从文档中找到了示例代码
+            - 根据id设置对应结构
+            - 默认点击这个指定元素就可以显示日期效果
+                - 选择日期后，日期会自动的填充到指定元素中
+        
+        */
+        // 自己给btn设置点击事件，点击后触发日期的展示
+            
+     $('#btn').on('click',function (){
+         jeDate( '#text',{
+             trigger:false,  //不使用插件的默认事件功能
+             format:'YYYY-MM-DD'
+             
+         }   )
+     } )
+  
+  
+  
+  </script>
+</body>
+</html>

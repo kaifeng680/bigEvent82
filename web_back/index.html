@@ -231,30 +231,29 @@
       
 
     // 请求数据
-    $.get({
-         url:'http://localhost:8000/admin/getuser',
-        success:function (res){
-          console.log(res)
-         if( res.code === 200   ){
-            
-        $('.user_info img,.user_center_link img').css('src',res.data.user_pic)
-          $('.user_info i').text(res.data.nickname   )
+    // $.get({   
+    //      url:'http://localhost:8000/admin/getuser',
+    //     success:function (res){
+    //       console.log(res)
+    //      if( res.code === 200   ){
+    //     $('.user_info img,.user_center_link img').css('src',res.data.user_pic)
+    //       $('.user_info i').text(res.data.nickname   )
   
-         }       
- 
-
-
-        }
- 
-
-
-
-
-
-
-    })
+    //      }       
+    //     }
+    // })
       
 
+     $.get({
+       url:'http://localhost:8000/admin/getuser',
+       success:function (res){
+         console.log(res)
+         if(res.code === 200  ){   
+         $('.user_info img,.user_center_link img').css('src',res.data.user_pic)
+         $('.user_info i').text( res.data.nickname)
+        }
+       }
+     })
 
 
 

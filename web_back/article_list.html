@@ -340,7 +340,7 @@
       // 筛选功能
      
     $.get({
-            
+          
        url:'http://localhost:8000/admin/category_search',
        success:function (res){
          console.log(res)
@@ -352,7 +352,7 @@
 
     
       $('#btnSearch').on('click', function (e) {
-     
+        // 取消跳转功能
         e.preventDefault()  
 
          // 将旧的分页结构销毁
@@ -364,18 +364,18 @@
     //  设置删除事件
         // 因为是动态添加需要进行事件委托
           // 有错误望详细查询
-    $('tbody').on( 'click','.btn-danger',function () {
-
+    $('tbody').on( 'click','.btn-danger',function () {      
       var id =$(this).data('id')
       var $tr= $(this).parents('tr')
        $.get({
+           
          url:'http://localhost:8000/admin/article_delete',
          data:{
            id:id
          },
          success:function (res){
            console.log(res)
-           if(res.code ===204  ){
+           if(res.code ===200  ){
              $tr.remove()
            }
          }
@@ -385,21 +385,9 @@
 
     })
 
-  
-
-
-
-
-
-
-
-
-
-
-
      function  getArtical () {  
       $.get({
-      
+           
         url:'http://localhost:8000/admin/search',
         //  需要四个参数
               //  - type 文章的分类  state 文章的状态
